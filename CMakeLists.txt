@@ -8,14 +8,14 @@ set(CMAKE_CXX_STANDARD 14)
 
 find_package(JetsonGPIO)
 
-set(rotary_encoder_test rotary_encoder_test)
+set(motor_test motor_test)
 
-add_executable(${rotary_encoder_test} ${CMAKE_CURRENT_SOURCE_DIR}/tests/rotary_encoder_test.cpp)
+add_executable(${motor_test} ${CMAKE_CURRENT_SOURCE_DIR}/tests/motor_test.cpp)
 
 # sets it so that this target is built in the tests folder
-set_target_properties( rotary_encoder_test
+set_target_properties( motor_test
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
 )
 
-target_link_libraries(${rotary_encoder_test} JetsonGPIO::JetsonGPIO)
+target_link_libraries(${motor_test} JetsonGPIO::JetsonGPIO)
