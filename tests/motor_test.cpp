@@ -62,26 +62,33 @@ int main()
 
     // initsalize with zero speed
     float speed = 0.0;
-    pwmLeft.start(getDutyCycleFromSpeed(speed));
-    pwmRight.start(getDutyCycleFromSpeed(speed));
-    cout << "Stationary for 2 seconds" << endl;
-    delay(2);
+    float dutyCycle = getDutyCycleFromSpeed(speed);
+    pwmLeft.start(dutyCycle);
+    pwmRight.start(dutyCycle);
 
-    float incr = 0.05;
+    float incr = 0.1;
+    int i = 0;
+    cout << "Loop " + to_string(++i) << endl;
 
     signal(SIGINT, signalHandler); // When CTRL+C pressed, signalHandler will be called
-    cout << "Testing movement" << endl;
+
     while (!running)
     {
-        delay(0.25);
-        if (speed >= 1.0)
+        delay(0.1);
+
+        if (speed >= 1.0){
             incr = -incr;
-        if (speed <= -1.0)
+        }
+        if (speed <= -1.0){
             incr = -incr;
+            cout << "Loop " + to_string(++i) << endl;
+        }
+
         speed += incr;
 
         pwmLeft.ChangeDutyCycle(getDutyCycleFromSpeed(speed));
         pwmRight.ChangeDutyCycle(getDutyCycleFromSpeed(-speed));
+
     }
 
     pwmLeft.stop();
