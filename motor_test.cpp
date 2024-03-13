@@ -9,7 +9,7 @@
 // for signal handling
 #include <signal.h>
 
-#include <JetsonGPIO.h>
+#include "rhobot.h"
 
 using namespace std;
 
@@ -28,26 +28,22 @@ static bool running = true;
 // function to break out of loops so pwm can be cleaned up when exiting program early
 void signalHandler(int s) {
     running = false;
-    }
-
-float getDutyCycleFromSpeed(float speed)
-{
-    // take in speed from -1 to 1 (backwards to forwards) and return the calibrated pwm for the motors
-    // motors want an on time of 1.5 ms for stationary, 1.7 ms for max anticlockwise and 1.3 for max clockwise
-    
-    // map speed from -1 -> 1 to 0.0013 -> 0.0017
-    float onTime = ( (speed + 1.0) / 2.0 ) * 0.0004 + 0.0013; // first goes from -1 -> 1 to 0 -> 1, then 0 -> 0.004 and finally 0.0013 -> 0.0017
-
-    float period = 1.0f / (float)frequency;
-
-    float dutyCycle = onTime / period * 100.0;
-    
-    return dutyCycle;
 }
 
 int main()
 {
 
+    GPIO::setmode(GPIO::BOARD); // still need to include this
+
+    RhoBot rhobot;
+
+    rhobot.start();
+    rhobot.setLeftWheelSpeed(1.0);
+    delay(1);
+    rhobot.setRightWheelSpeed(0.0);
+    rhobot.stop();
+
+    /*
     cout << "Motor test running. Press CTRL+C to exit." << endl;
 
     // Board pin-numbering scheme
@@ -206,7 +202,7 @@ int main()
     } 
     else {
         cout << "Test terminated." << endl;
-    }
+    } */
     
     return 0;
 }
