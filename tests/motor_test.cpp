@@ -1,5 +1,3 @@
-// from stationary, smooth to full speed clockwise, smooth to full speed counterclockwise
-// full speed clockwise, then full speed counterclockwise
 
 #include <iostream>
 // for delay function.
@@ -15,20 +13,26 @@
 
 using namespace std;
 
-int right_motor_pin = 32;
-int left_motor_pin = 33;
+int left_motor_pin = 32;
+int right_motor_pin = 33;
 
-int frequency = 60; // in Hz for a period of 16.67 ms, motor data sheet wants 20 ms between pulses but this seems to work!
+// in Hz for a period of 16.67 ms, motor data sheet requests 20 ms between pulses but this seems to work best
+int frequency = 60;
 
+// delay function
 inline void delay(double s) { this_thread::sleep_for(std::chrono::duration<double>(s)); }
 
-static bool running = false;
+// variable to store if CTRL+C is pressed
+static bool running = true;
 
-void signalHandler(int s) { running = true; }
+// function to break out of loops so pwm can be cleaned up when exiting program early
+void signalHandler(int s) {
+    running = false;
+    }
 
 float getDutyCycleFromSpeed(float speed)
 {
-    // take in speed from -1 to 1 (anticlockwise to clockwise) and return the calibrated pwm for the motors
+    // take in speed from -1 to 1 (backwards to forwards) and return the calibrated pwm for the motors
     // motors want an on time of 1.5 ms for stationary, 1.7 ms for max anticlockwise and 1.3 for max clockwise
     
     // map speed from -1 -> 1 to 0.0013 -> 0.0017
@@ -46,54 +50,163 @@ int main()
 
     cout << "Motor test running. Press CTRL+C to exit." << endl;
 
-    // Pin Setup.
     // Board pin-numbering scheme
     GPIO::setmode(GPIO::BOARD);
 
-    // set pins as output pins with optional initial state of HIGH
+    // setup pins as pwms
     GPIO::setup(left_motor_pin, GPIO::OUT, GPIO::HIGH);
     GPIO::PWM pwmLeft(left_motor_pin, 50);
     GPIO::setup(right_motor_pin, GPIO::OUT, GPIO::HIGH);
     GPIO::PWM pwmRight(right_motor_pin, 50);
 
-    // set frequency
+    // set frequency of the pwms
     pwmLeft.ChangeFrequency(frequency);
     pwmRight.ChangeFrequency(frequency);
 
     // initsalize with zero speed
     float speed = 0.0;
     float dutyCycle = getDutyCycleFromSpeed(speed);
+
     pwmLeft.start(dutyCycle);
     pwmRight.start(dutyCycle);
 
+    // increment the speed each loop iteration
     float incr = 0.1;
+
+    // track how many loops so can break out after one
     int i = 0;
-    cout << "Loop " + to_string(++i) << endl;
 
-    signal(SIGINT, signalHandler); // When CTRL+C pressed, signalHandler will be called
+    // When CTRL+C pressed, signalHandler will break out of loops to clean up pwm
+    signal(SIGINT, signalHandler);
 
-    while (!running)
-    {
-        delay(0.1);
+    if (running){ cout << "Left motor from stationary, smooth to full speed forward, smooth to full speed backward." << endl; }
+    // so starting from 0.0 speed, going up to 1.0, and then down to -1.0 and back to 0.0
+    while (running) {
 
-        if (speed >= 1.0){
-            incr = -incr;
+        if (speed <= 0.05 && speed >= -0.05){
+            i += 1;
+
+            // i will equal 3 after its gone to full speed in both directions and then come back to zero
+            if (i == 3){
+                // reset for next section
+                i = 0;
+                incr = 0.1;
+                speed = 0.0;
+                break;
+            }
         }
-        if (speed <= -1.0){
+
+        delay(0.25);
+
+        if (speed >= 1.0)
             incr = -incr;
-            cout << "Loop " + to_string(++i) << endl;
+        if (speed <= -1.0)
+            incr = -incr;
+
+        speed += incr;
+
+        pwmLeft.ChangeDutyCycle(getDutyCycleFromSpeed(speed));
+        pwmRight.ChangeDutyCycle(getDutyCycleFromSpeed(0.0));
+    }
+
+    if (running){ cout << "Right motor from stationary, smooth to full speed forward, smooth to full speed backward." << endl; }
+    // so starting from 0.0 speed, going up to 1.0, and then down to -1.0 and back to 0.0
+    while (running) {
+
+        if (speed <= 0.05 && speed >= -0.05){
+            i += 1;
+
+            // i will equal 3 after its gone to full speed in both directions and then come back to zero
+            if (i == 3){
+                // reset for next section
+                i = 0;
+                incr = 0.1;
+                speed = 0.0;
+                break;
+            }
         }
+
+        delay(0.25);
+
+        if (speed >= 1.0)
+            incr = -incr;
+        if (speed <= -1.0)
+            incr = -incr;
+
+        speed += incr;
+        
+        pwmLeft.ChangeDutyCycle(getDutyCycleFromSpeed(0.0));
+        pwmRight.ChangeDutyCycle(getDutyCycleFromSpeed(-speed));
+    }
+
+    if (running){ cout << "Both motors from stationary, smooth to full speed forward, smooth to full speed backward." << endl; }
+    // so starting from 0.0 speed, going up to 1.0, and then down to -1.0 and back to 0.0
+    while (running) {
+
+        if (speed <= 0.05 && speed >= -0.05){
+            i += 1;
+
+            // i will equal 3 after its gone to full speed in both directions and then come back to zero
+            if (i == 3){
+                // reset for next section
+                i = 0;
+                incr = 0.1;
+                speed = 0.0;
+                break;
+            }
+        }
+
+        delay(0.25);
+
+        if (speed >= 1.0)
+            incr = -incr;
+        if (speed <= -1.0)
+            incr = -incr;
 
         speed += incr;
 
         pwmLeft.ChangeDutyCycle(getDutyCycleFromSpeed(speed));
         pwmRight.ChangeDutyCycle(getDutyCycleFromSpeed(-speed));
-
     }
 
+    if (running){
+        cout << "Full speed left, then full speed right, full speed forwards, full speed backwards." << endl;
+        delay(0.5);
+
+        pwmLeft.ChangeDutyCycle(getDutyCycleFromSpeed(1.0));
+        pwmRight.ChangeDutyCycle(getDutyCycleFromSpeed(1.0));
+        delay(3);
+    }
+
+    if (running){
+        pwmLeft.ChangeDutyCycle(getDutyCycleFromSpeed(-1.0));
+        pwmRight.ChangeDutyCycle(getDutyCycleFromSpeed(-1.0));
+        delay(3);
+    }
+
+    if (running){
+        pwmLeft.ChangeDutyCycle(getDutyCycleFromSpeed(1.0));
+        pwmRight.ChangeDutyCycle(getDutyCycleFromSpeed(-1.0));
+        delay(3);
+    }
+
+    if (running){
+        pwmLeft.ChangeDutyCycle(getDutyCycleFromSpeed(-1.0));
+        pwmRight.ChangeDutyCycle(getDutyCycleFromSpeed(1.0));
+        delay(3);
+    }
+
+    // clean up the pwm before closing
     pwmLeft.stop();
     pwmRight.stop();
     GPIO::cleanup();
 
+    if (running){
+        cout << "Test complete." << endl;
+    } 
+    else {
+        cout << "Test terminated." << endl;
+    }
+    
     return 0;
 }
