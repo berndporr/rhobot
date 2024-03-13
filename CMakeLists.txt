@@ -6,16 +6,8 @@ project(Rhobot
 
 set(CMAKE_CXX_STANDARD 14)
 
-find_package(JetsonGPIO)
+# build the test executables
+add_subdirectory(tests)
 
-set(motor_test motor_test)
-
-add_executable(${motor_test} ${CMAKE_CURRENT_SOURCE_DIR}/tests/motor_test.cpp)
-
-# sets it so that this target is built in the tests folder
-set_target_properties( motor_test
-    PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
-)
-
-target_link_libraries(${motor_test} JetsonGPIO::JetsonGPIO)
+# build the demo executables
+add_subdirectory(demos)
