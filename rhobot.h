@@ -1,6 +1,7 @@
 #ifndef RHOBOT_H
 #define RHOBOT_H
 
+#include <vector>
 #include <JetsonGPIO.h>
 
 // Rhoabot class for hardware communication (API)
@@ -9,12 +10,6 @@ class RhoBot
 {
 
     public:
-        
-        RhoBot() {
-            GPIO::setmode(GPIO::BOARD);
-            GPIO::setup(GPIO_MOTORL, GPIO::OUT, GPIO::HIGH);
-            GPIO::setup(GPIO_MOTORR, GPIO::OUT, GPIO::HIGH);
-        }
 
         // Starts the communication with the robot.
         void start();
@@ -54,10 +49,10 @@ class RhoBot
         static const int GPIO_MOTORR = 33;
         static const int GPIO_LiDARMOTOR = 12; // note that these are BOARD numbering scheme
 
-        GPIO::PWM pwmLeft = GPIO::PWM(GPIO_MOTORL, 50);
-        GPIO::PWM pwmRight = GPIO::PWM(GPIO_MOTORR, 50);
-
         static constexpr float pwmFrequency = 60.0; //Hz
+
+        std::unique_ptr<GPIO::PWM> pwmLeftPointer;
+        std::unique_ptr<GPIO::PWM> pwmRightPointer;
 
         float leftWheelSpeed = 0.0;
         float rightWheelSpeed = 0.0;

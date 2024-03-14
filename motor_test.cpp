@@ -33,14 +33,20 @@ void signalHandler(int s) {
 int main()
 {
 
-    GPIO::setmode(GPIO::BOARD); // still need to include this
-
     RhoBot rhobot;
 
     rhobot.start();
+
     rhobot.setLeftWheelSpeed(1.0);
-    delay(1);
-    rhobot.setRightWheelSpeed(0.0);
+    rhobot.setRightWheelSpeed(1.0);
+
+    delay(3);
+
+    rhobot.setLeftWheelSpeed(-1.0);
+    rhobot.setRightWheelSpeed(-1.0);
+
+    delay(3);
+
     rhobot.stop();
 
     /*
