@@ -1,5 +1,4 @@
 #include "rhobot.h"
-#include <iostream>
 
 float RhoBot::getDutyCycleFromSpeed(float speed) {
     // take in speed from -1 to 1 (backwards to forwards) and return the calibrated pwm for the motors
@@ -75,8 +74,7 @@ void RhoBot::setLeftWheelSpeed(float speed) {
     
     leftWheelSpeed = speed;
     pwmLeftPointer->ChangeDutyCycle(getDutyCycleFromSpeed(speed));
-    
-    std::cout << "changed left speed to " << std::to_string(leftWheelSpeed) << std::endl;
+
 }
 
 void RhoBot::setRightWheelSpeed(float speed) {
