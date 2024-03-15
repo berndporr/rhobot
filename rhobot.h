@@ -30,10 +30,10 @@ class RhoBot
         void setRightWheelSpeed(float speed);
 
         // Move forward or backward a certain number of meters
-        void moveInline(float distInMeters);
+        void moveInline(float distInMeters, bool forward);
 
         // Turn left or right by a certain number of degrees
-        void changeHeading(float angleInDegrees);
+        void changeHeading(float angleInDegrees, bool clockwise);
 
         // set LiDAR motor speed between -1 and +1
         void setLiDarMotorSpeed(float speed);
@@ -44,18 +44,25 @@ class RhoBot
 
     private:
 
-        // Some attributes to track things
+        // Motor pins
         static const int GPIO_MOTORL = 32;
         static const int GPIO_MOTORR = 33;
         static const int GPIO_LiDARMOTOR = 12; // note that these are BOARD numbering scheme
 
-        static constexpr float pwmFrequency = 60.0; //Hz
-
+        // Pointers to PWM objects
         std::unique_ptr<GPIO::PWM> pwmLeftPointer;
         std::unique_ptr<GPIO::PWM> pwmRightPointer;
-
+        
+        // PWM parameters
+        static constexpr float pwmFrequency = 60.0; //Hz
         float leftWheelSpeed = 0.0;
         float rightWheelSpeed = 0.0;
+
+        // Physcial measurements for open loop dynamics in meters and degrees
+        float r_wheel = 0.065;
+        float r_turn = 0.12;
+        // Max angular speed of wheel in degrees/s
+        float wheel_speed = 150;
 
         bool running = false;
 

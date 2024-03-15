@@ -36,8 +36,8 @@ install(
 ### COMPILE EXECUTABLES ###
 
 set(_executable_targets
-    "motor_test"
-    "differential_steering_demo"
+    "test_motors"
+    "test_differential_steering"
     )
 
 foreach (executables ${_executable_targets})

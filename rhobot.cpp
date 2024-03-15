@@ -1,5 +1,10 @@
 #include "rhobot.h"
 
+#include <chrono>
+#include <map>
+#include <string>
+#include <thread>
+
 float RhoBot::getDutyCycleFromSpeed(float speed) {
     // take in speed from -1 to 1 (backwards to forwards) and return the calibrated pwm for the motors
     // motor datasheet requests an on time of 1.5 ms for stationary, 1.7 ms for max anticlockwise and 1.3 for max clockwise
@@ -92,11 +97,43 @@ void RhoBot::setRightWheelSpeed(float speed) {
     pwmRightPointer->ChangeDutyCycle(getDutyCycleFromSpeed(-speed));
 }
 
-void RhoBot::moveInline(float distInMeters) {
+void RhoBot::moveInline(float distInMeters, bool forward) {
+
+    // rough estimation of open loop dynamics to move inline a distance in meters
+    // this will be improved by the addition of speed sensors on both wheels to provide feedback
+
+    float onTimeInSeconds = distInMeters * 360.0 / (2 * 3.1415 * r_wheel * wheel_speed);
+    
+    float speed = 1.0;
+    if (!forward) {speed = -speed;}
+
+    setLeftWheelSpeed(speed);
+    setRightWheelSpeed(speed);
+
+    std::this_thread::sleep_for(std::chrono::duration<double>(onTimeInSeconds));
+
+    setLeftWheelSpeed(0.0);
+    setRightWheelSpeed(0.0);
 
 }
 
-void RhoBot::changeHeading(float angleInDegrees) {
+void RhoBot::changeHeading(float angleInDegrees, bool clockwise) {
+
+    // rough estimation of open loop dynamics to move inline a distance in meters
+    // this will be improved by the addition of speed sensors on both wheels to provide feedback
+
+    float onTimeInSeconds = angleInDegrees * r_turn / (r_wheel * wheel_speed);
+    
+    float speed = 1.0;
+    if (!clockwise) {speed = -speed;}
+
+    setLeftWheelSpeed(speed);
+    setRightWheelSpeed(-speed);
+
+    std::this_thread::sleep_for(std::chrono::duration<double>(onTimeInSeconds));
+
+    setLeftWheelSpeed(0.0);
+    setRightWheelSpeed(0.0);
 
 }
 

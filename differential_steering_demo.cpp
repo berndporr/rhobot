@@ -1,5 +1,0 @@
-#include "rhobot.h"
-
-int main(){
-    return 0;
-}
