@@ -1,5 +1,8 @@
 ## C++
 
+# Build Folder
+build/
+
 # Prerequisites
 *.d
 
@@ -34,7 +37,6 @@
 *.app
 
 ## CMake
-
 CMakeLists.txt.user
 CMakeCache.txt
 CMakeFiles
