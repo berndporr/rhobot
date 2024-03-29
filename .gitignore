@@ -1,7 +1,7 @@
 ## C++
 
 # Build Folder
-build/
+/build/
 
 # Prerequisites
 *.d
