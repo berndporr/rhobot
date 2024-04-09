@@ -4,7 +4,7 @@
 re_cmake.sh
 
 # Build Folder
-#build/
+build/
 
 # Prerequisites
 *.d
