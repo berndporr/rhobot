@@ -39,6 +39,7 @@ set(_executable_targets
     "test_motors"
     "test_differential_steering"
     "test_lidar"
+    #"test_camera"
     )
 
 foreach (executables ${_executable_targets})
