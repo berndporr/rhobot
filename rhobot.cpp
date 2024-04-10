@@ -85,7 +85,7 @@ void RhoBot::setLeftWheelSpeed(float speed) {
 
     // make sure speed is in the right bounds
     if (speed < -1)
-                speed = -1;
+            speed = -1;
     if (speed > 1)
             speed = 1;
     
@@ -100,7 +100,7 @@ void RhoBot::setRightWheelSpeed(float speed) {
 
     // make sure speed is in the right bounds
     if (speed < -1)
-                speed = -1;
+            speed = -1;
     if (speed > 1)
             speed = 1;
     
@@ -178,13 +178,13 @@ void RhoBot::softPwmPinControl() {
     while (running) { // from start called to stop called
 
         // turn high, sleep for on time and turn low
-        if (lidarMotorSpeed >= 0.0) // if speed is 0.0 dont ever turn the pin on
+        if (lidarMotorSpeed > 0.0) // if speed is 0.0 dont ever turn the pin on
             GPIO::output(GPIO_LiDARMOTOR, GPIO::HIGH);
 
         std::this_thread::sleep_for(std::chrono::duration<double>(lidarMotorOntime));
 
-        if (lidarMotorSpeed <= 1.0)
-            GPIO::output(GPIO_LiDARMOTOR, GPIO::LOW); // if speed is 1.o dont ever turn the pin off
+        if (lidarMotorSpeed < 1.0) // if speed is 1.0 dont ever turn the pin off
+            GPIO::output(GPIO_LiDARMOTOR, GPIO::LOW);
     }
 
 }
