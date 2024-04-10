@@ -68,7 +68,7 @@ class RhoBot
 
         // Physcial measurements for open loop dynamics in meters and degrees
         float r_wheel = 0.065;
-        float r_turn = 0.12;
+        float r_turn = 0.06;
         // Max angular speed of wheel in degrees/s
         float wheel_speed = 150;
 
