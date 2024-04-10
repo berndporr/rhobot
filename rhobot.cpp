@@ -139,7 +139,7 @@ void RhoBot::changeHeading(float angleInDegrees, bool clockwise) {
     // rough estimation of open loop dynamics to move inline a distance in meters
     // this will be improved by the addition of speed sensors on both wheels to provide feedback
 
-    float onTimeInSeconds = angleInDegrees * r_turn / (r_wheel * wheel_speed);
+    float onTimeInSeconds = angleInDegrees * (2 * r_turn) / (r_wheel * wheel_speed);
     
     float speed = 1.0;
     if (!clockwise) {speed = -speed;}
