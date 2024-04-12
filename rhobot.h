@@ -61,7 +61,7 @@ class RhoBot
         float rightWheelSpeed = 0.0; // -1.0 to 1.0
 
         // soft PWM paramteres
-        static const int softPwmFrequency = 50; // Hz
+        static const int softPwmFrequency = 40; // Hz
         float lidarMotorSpeed = 0.0; // 0 to 1.0
         float lidarMotorOnTime = 0.0;
         float lidarMotorOffTime = 0.0;
