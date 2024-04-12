@@ -63,7 +63,8 @@ class RhoBot
         // soft PWM paramteres
         static const int softPwmFrequency = 50; // Hz
         float lidarMotorSpeed = 0.0; // 0 to 1.0
-        float lidarMotorOntime = 0.0;
+        float lidarMotorOnTime = 0.0;
+        float lidarMotorOffTime = 0.0;
         std::thread softPwmWorker;
 
         // Physcial measurements for open loop dynamics in meters and degrees

@@ -24,7 +24,9 @@ int main()
     float speed = 0.0;
     float incr = 0.1;
 
-	// Testing the motor speed
+    rhobot.setLiDarMotorSpeed(0.0); // no speed
+    delay(3);
+
     // Start from 0.0 speed, go up to 1.0, then back to 0.0
     for (int i = 0; i < 20; i++) {
 

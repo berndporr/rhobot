@@ -168,25 +168,34 @@ void RhoBot::setLiDarMotorSpeed(float speed) {
     lidarMotorSpeed = speed;
 
     // calculate the on time here so don't have to repeat the computation
-    lidarMotorOntime = lidarMotorSpeed * (1.0 / (float)softPwmFrequency); // in seconds
+    lidarMotorOnTime = lidarMotorSpeed * (1.0 / (float)softPwmFrequency); // in seconds
+
+    // calculate the on time here so don't have to repeat the computation
+    lidarMotorOffTime = (1.0 - lidarMotorSpeed) * (1.0 / (float)softPwmFrequency); // in seconds
 
 }
-
 
 void RhoBot::softPwmPinControl() {
 
     while (running) { // from start called to stop called
 
-        // turn high, sleep for on time and turn low
-        if (lidarMotorSpeed > 0.0) // if speed is 0.0 dont ever turn the pin on
-            GPIO::output(GPIO_LiDARMOTOR, GPIO::HIGH);
-
-        std::this_thread::sleep_for(std::chrono::duration<double>(lidarMotorOntime)); // on time
-
-        if (lidarMotorSpeed < 1.0) // if speed is 1.0 dont ever turn the pin off
+        if (lidarMotorSpeed < 0.1){ // dont turn pin on if speed is tiny
             GPIO::output(GPIO_LiDARMOTOR, GPIO::LOW);
+        }
+        else if (lidarMotorSpeed > 0.9){ // dont turn pin off if speed is big
+            GPIO::output(GPIO_LiDARMOTOR, GPIO::HIGH);
+        }
+        else {
+            
+            // turn high, sleep for on time and turn low
+            GPIO::output(GPIO_LiDARMOTOR, GPIO::HIGH);
+            std::this_thread::sleep_for(std::chrono::duration<double>(lidarMotorOnTime)); // on time
 
-        std::this_thread::sleep_for(std::chrono::duration<double>((1.0 / (float)softPwmFrequency) - softPlidarMotorOntime)); // off time
+            GPIO::output(GPIO_LiDARMOTOR, GPIO::LOW);
+            std::this_thread::sleep_for(std::chrono::duration<double>(lidarMotorOffTime)); // off time
+
+        }
+
     }
 
 }
