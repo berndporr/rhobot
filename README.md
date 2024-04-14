@@ -2,7 +2,9 @@
 
 Rhobot is a mobile robot for research into obstacle avoidance built using an NVIDIA Jetson Nano, a Slamtec A1M8 RPLiDAR, a Raspberry Pi Cam v2, and two Parallax CR serco motors. The API provided in this repo provides an abstracted way to interface with the motors, however does not currently support interface with the LiDAR or camera so these would need to be implemented by a user.
 
-![RhoBot](./figs/rhobot.png)
+<p align=center>
+<img src="./figs/rhobot.jpg" alt="Rhobot" width="500"/>
+</p>
 
 ## Table of contents
 
@@ -43,7 +45,9 @@ The design files for the PCB were made using KiCAD and are available in the PCB 
 ### Solder PCB
 Firstly, sockets should be soldered onto the custom PCB. The 40 pin socket should be soldered to the bottom of the board and the remaining sockets should be mounted to the top of the board.
 
-![PCB](./figs/PCB.png)
+<p align=center>
+<img src="./figs/PCB.PNG" alt="PCB" width="300"/>
+</p>
 
 ### Lowest Level
 1) Screw the wheels onto the motors.
@@ -51,7 +55,9 @@ Firstly, sockets should be soldered onto the custom PCB. The 40 pin socket shoul
 3) Use bolts screws to attach the camera to the mount on the "lower" component and route it's cable to the back of the enclosure.
 4) Rest the power supply on top of the motors with the ports facing the back of the enclosure. Connect the USB-A to DC cables to the USB ports of the supply.
 
-![Lower](./figs/lower.png)
+<p align=center>
+<img src="./figs/lower1.PNG" alt="Lower A" width="300"/> <img src="./figs/lower2.PNG" alt="Lower B" width="300"/>
+</p>
 
 ### Middle Level
 1) Use bolts to secure the Jetson to the lower standoffs of the "middle" enclosure component.
@@ -61,14 +67,18 @@ Firstly, sockets should be soldered onto the custom PCB. The 40 pin socket shoul
 5) Connect the LiDAR UART and motor cables to the PCB noting the schematic.
 6) Place the "middle" component over the "lower" component.
 
-![Middle](./figs/middle.png)
+<p align=center>
+<img src="./figs/middle.PNG" alt="Middle" width="300"/>
+</p>
 
 ### Upper Level
 1) Place the "upper" component onto the "middle" componet and secure the enclosure with the sixe bolt holes around the perimeter.
 2) Attach the USB Wifi adapter to a USB port on the Jetson
 3) Connect the power supply to the Jetson and PCB through using the USB to DC cables.
 
-![Upper](./figs/upper.png)
+<p align=center>
+<img src="./figs/upper.PNG" alt="PCB" width="300"/>
+</p>
 
 ### Jetson Set Up
 For detailed instructions how how to set up the Jetson, click this [link](https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-devkit).
