@@ -1,6 +1,6 @@
 # RhoBot: A Robotics and AI platform
 
-RhoBot is a mobile robot for research int obstacle avoidance built using an NVIDIA Jetson Nano, a Slamtec A1M8 RPLiDAR, a Raspberry Pi Cam v2, and two Parallax CR serco motors. The API provided in this repo provides an abstracted way to interface with the motors, however does not currently support interface with the LiDAR or camera so these would need to be implemented by a user.
+RhoBot is a mobile robot for research in obstacle avoidance built using an NVIDIA Jetson Nano, a Slamtec A1M8 RPLiDAR, a Raspberry Pi Cam v2, and two Parallax CR serco motors. The API provided in this repo provides an abstracted way to interface with the motors, however does not currently support interface with the LiDAR or camera so these would need to be implemented by a user.
 
 <p align=center>
 <img src="./figs/rhobot.jpg" alt="Rhobot" width="500"/>
