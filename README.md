@@ -116,3 +116,5 @@ sample programs are provided to test the motor interface. To execute them run th
 ## Credits
 
 This project has been supervised by Dr. Bernd Porr and is a continuation of work done on the [AlphaBot](https://github.com/berndporr/alphabot) and [SigmaBot](https://github.com/berndporr/sigmabot) projects.
+
+Rhobot is copyright ©️ of J.C. Redmond III and any use of the material in this repository should be appropriately credited.
